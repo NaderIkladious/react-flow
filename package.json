@@ -1,13 +1,21 @@
 {
   "name": "react-flow",
   "version": "0.1.0",
-  "description": "A React library scaffold created with TypeScript.",
+  "description": "Declarative control-flow primitives for React (Condition/If/Else, For/ForEach, Batch) with TypeScript types.",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NaderIkladious/react-flow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NaderIkladious/react-flow/issues"
+  },
+  "homepage": "https://github.com/NaderIkladious/react-flow#readme",
   "scripts": {
     "build": "npm run clean && rollup -c",
     "clean": "rm -rf dist && mkdir -p dist",
@@ -20,7 +28,7 @@
     "typescript",
     "library"
   ],
-  "author": "",
+  "author": "Nader Ikladious",
   "license": "MIT",
   "dependencies": {
     "tslib": "^2.6.2"

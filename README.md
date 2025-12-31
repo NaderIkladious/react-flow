@@ -23,6 +23,7 @@ To explore the Vite example app:
 cd example
 npm install
 npm run dev
+# For GitHub Pages build: GITHUB_PAGES=true npm run build
 ```
 
 ## API

@@ -130,8 +130,22 @@ const products: Product[] = [
   { id: "p6", name: "Payments", price: "$59" },
 ];
 
+const installCmd = "npm i @naderikladious/react-flow";
+
 const App: React.FC = () => {
   const [isPro, setIsPro] = React.useState(true);
+  const [copied, setCopied] = React.useState(false);
+
+  const copyInstallCommand = async () => {
+    try {
+      await navigator.clipboard.writeText(installCmd);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      console.warn("Clipboard copy failed", err);
+      setCopied(false);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-5 py-12 space-y-8">
@@ -154,9 +168,9 @@ const App: React.FC = () => {
             <a className="button-primary" href="https://github.com/NaderIkladious/react-flow">
               View on GitHub
             </a>
-            <a className="button-ghost" href="https://www.npmjs.com/package/react-flow">
-              npm install react-flow
-            </a>
+            <button className="button-ghost" type="button" onClick={copyInstallCommand}>
+              {copied ? "Copied!" : "Copy npm install"}
+            </button>
           </div>
           <div className="flex flex-wrap gap-2">
             <span className="pill">Type-safe</span>
@@ -295,9 +309,9 @@ const App: React.FC = () => {
           </h3>
         </div>
         <div className="flex gap-3 flex-wrap">
-          <a className="button-primary" href="https://www.npmjs.com/package/react-flow">
-            npm install react-flow
-          </a>
+          <button className="button-primary" type="button" onClick={copyInstallCommand}>
+            {copied ? "Copied!" : installCmd}
+          </button>
           <a className="button-ghost" href="https://github.com/NaderIkladious/react-flow">
             Star on GitHub
           </a>

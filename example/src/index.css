@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Manrope:wght@600;700&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-midnight-900 text-slate-100 min-h-screen;
+  background: radial-gradient(120% 120% at 10% 20%, rgba(94, 234, 212, 0.18), transparent 60%),
+    radial-gradient(80% 80% at 80% 0%, rgba(59, 130, 246, 0.25), transparent 50%),
+    #0a0f1f;
+}
+
+.code-block {
+  @apply bg-midnight-800/70 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-xs leading-relaxed font-mono;
+}
+
+.card-surface {
+  @apply bg-midnight-800/70 border border-slate-700/50 rounded-2xl shadow-card;
+}
+
+.badge-glow {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold text-slate-50;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.16), rgba(59, 130, 246, 0.24));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.button-base {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-semibold text-sm transition-colors border;
+}
+
+.button-primary {
+  @apply button-base text-midnight-900 border-transparent;
+  background: linear-gradient(135deg, #22d3ee, #3b82f6);
+}
+
+.button-ghost {
+  @apply button-base text-slate-100 border-slate-700/60 bg-white/5;
+}
+
+.pill {
+  @apply inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-slate-100;
+}
+
+.switch {
+  @apply inline-flex items-center gap-2 cursor-pointer select-none;
+}
+
+.switch input {
+  @apply hidden;
+}
+
+.switch .slider {
+  @apply relative w-11 h-6 rounded-full bg-white/10 transition-colors;
+}
+
+.switch .slider::before {
+  content: "";
+  @apply absolute rounded-full bg-midnight-900 left-1 top-1 transition-transform;
+  width: 18px;
+  height: 18px;
+}
+
+.switch input:checked + .slider {
+  background: linear-gradient(135deg, #22d3ee, #3b82f6);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(1.25rem);
+}
+
+.glow-border {
+  box-shadow: 0 10px 40px rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.4);
+}

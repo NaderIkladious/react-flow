@@ -27,6 +27,8 @@ jobs:
       - run: npm run build
 
       - name: Build demo
+        env:
+          GITHUB_PAGES: "true"
         run: |
           cd example
           npm ci

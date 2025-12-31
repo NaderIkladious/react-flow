@@ -1,5 +1,5 @@
 {
-  "name": "react-flow",
+  "name": "@naderikladious/react-flow",
   "version": "0.1.0",
   "description": "Declarative control-flow primitives for React (Condition/If/Else, For/ForEach, Batch) with TypeScript types.",
   "main": "dist/index.cjs",

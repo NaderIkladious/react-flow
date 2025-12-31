@@ -4,7 +4,7 @@ const typescript = require("@rollup/plugin-typescript");
 const dts = require("rollup-plugin-dts").default;
 
 const input = "src/index.tsx";
-const external = ["react", "react-dom"];
+const external = ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "tslib"];
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
 /** @type {import('rollup').RollupOptions[]} */

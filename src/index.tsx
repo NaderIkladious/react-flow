@@ -28,25 +28,29 @@ export type FlowConditionalBranchProps = {
   children?: React.ReactNode;
 };
 
-const resolveCondition = (condition: boolean | undefined, context: FlowConditionContextValue) => {
+const resolveCondition = (
+  condition: boolean | undefined,
+  context: FlowConditionContextValue,
+  componentName: string
+) => {
   if (typeof condition === "boolean") {
     return condition;
   }
   if (context.hasProvider) {
     return context.value;
   }
-  throw new Error("Flow.If/Flow.Else requires a condition prop or Flow.Condition parent.");
+  throw new Error(`${componentName} requires a condition prop or Flow.Condition parent.`);
 };
 
 export const If: React.FC<FlowConditionalBranchProps> = ({ condition, children }) => {
   const context = React.useContext(FlowConditionContext);
-  const active = resolveCondition(condition, context);
+  const active = resolveCondition(condition, context, "Flow.If");
   return active ? <>{children}</> : null;
 };
 
 export const Else: React.FC<FlowConditionalBranchProps> = ({ condition, children }) => {
   const context = React.useContext(FlowConditionContext);
-  const active = resolveCondition(condition, context);
+  const active = resolveCondition(condition, context, "Flow.Else");
   return !active ? <>{children}</> : null;
 };
 
@@ -75,7 +79,8 @@ export type FlowForProps = {
 
 export const For: React.FC<FlowForProps> = ({ count, start = 0, step = 1, children }) => {
   if (!Number.isFinite(count) || count < 0) {
-    throw new Error("Flow.For requires a non-negative finite count.");
+    console.warn("Flow.For received an invalid count; rendering nothing.");
+    return null;
   }
   if (!Number.isFinite(step) || step === 0) {
     throw new Error("Flow.For requires a finite non-zero step.");

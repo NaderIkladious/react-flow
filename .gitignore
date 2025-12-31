@@ -1,6 +1,7 @@
 node_modules/
 dist/
-!dist/.gitkeep
+example/node_modules/
+example/dist/
 npm-debug.log*
 yarn-error.log*
 .DS_Store

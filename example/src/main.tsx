@@ -14,12 +14,16 @@ const comparisons = [
     summary: "Replace scattered return branches with a single Flow tree.",
     before: `
 function Dashboard({ user, flags }) {
-  if (!user) return <Login />;
-  if (!flags.analytics) return <Upgrade />;
-  if (user.role !== "admin" && user.trialExpired) {
-    return <Paywall />;
-  }
-  return <Analytics />;
+  return (
+    <>
+      {!user && <Login />}
+      {user && !flags.analytics && <Upgrade />}
+      {user && flags.analytics && user.role !== "admin" && user.trialExpired && <Paywall />}
+      {user &&
+        flags.analytics &&
+        (user.role === "admin" || !user.trialExpired) && <Analytics />}
+    </>
+  );
 }
 `.trim(),
     after: `
@@ -297,7 +301,7 @@ const App: React.FC = () => {
               itemOne={
                 <div className="compare-item">
                   <CodeSample
-                    title={`${comparisons[activeIndex].title} — without Flow`}
+                    title={`${comparisons[activeIndex].title}`}
                     badge="Manual"
                     code={comparisons[activeIndex].before}
                     accent="manual"
@@ -307,7 +311,7 @@ const App: React.FC = () => {
               itemTwo={
                 <div className="compare-item">
                   <CodeSample
-                    title={`${comparisons[activeIndex].title} — with Flow`}
+                    title={`${comparisons[activeIndex].title}`}
                     badge="Flow"
                     code={comparisons[activeIndex].after}
                     accent="flow"

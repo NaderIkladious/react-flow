@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Flow } from "react-flow";
-import {
-  ReactCompareSlider,
-  ReactCompareSliderHandle,
-} from "react-compare-slider";
+import { ReactCompareSlider, ReactCompareSliderHandle } from "react-compare-slider";
 import { Highlight, Language, themes } from "prism-react-renderer";
 import "./index.css";
+import NpmIcon from "./icons/NpmIcon";
+import GithubIcon from "./icons/GithubIcon";
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 const comparisons = [
   {
@@ -91,17 +91,17 @@ return batches.map((batch, idx) => (
   <section key={idx}>
     {batch.map((user) => (
       <UserRow key={user.id} user={user} />
-  ))}
-</section>
+    ))}
+  </section>
 ));
 `.trim(),
     after: `
 <Flow.Batch items={users} batchSize={2}>
   {(batch, idx) => (
     <section key={idx}>
-      {batch.map((user) => (
-        <UserRow key={user.id} user={user} />
-      ))}
+      <Flow.ForEach items={batch} keyExtractor={(user) => user.id}>
+        {(user) => <UserRow user={user} />}
+      </Flow.ForEach>
     </section>
   )}
 </Flow.Batch>
@@ -185,6 +185,7 @@ const HighlightedCode: React.FC<{ code: string; language?: Language }> = ({
     )}
   </Highlight>
 );
+const npmUrl = "https://www.npmjs.com/package/@naderikladious/react-flow";
 
 const App: React.FC = () => {
   const [isPro, setIsPro] = React.useState(true);
@@ -231,10 +232,16 @@ const App: React.FC = () => {
           </p>
           <div className="flex flex-wrap gap-3">
             <a className="button-primary" href="https://github.com/NaderIkladious/react-flow">
-              View on GitHub
+              <GithubIcon className="h-6 w-6 fill-white" />
+              <span className="ml-2">GitHub</span>
+            </a>
+            <a className="button-ghost" href={npmUrl}>
+              <NpmIcon className="w-8 h-8" />
+              <span className="ml-2">npm package</span>
             </a>
             <button className="button-ghost" type="button" onClick={copyInstallCommand}>
-              {copied ? "Copied!" : "Copy npm install"}
+              <DocumentDuplicateIcon className="h-5 w-5" />
+              <span className="ml-2">{copied ? "Copied!" : "Copy npm install"}</span>
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -265,15 +272,7 @@ const App: React.FC = () => {
               branching across files.
             </p>
           </div>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={isPro}
-              onChange={(e) => setIsPro(e.target.checked)}
-            />
-            <span className="slider" />
-            <span className="switch-label">{isPro ? "Pro" : "Trial"}</span>
-          </label>
+        
         </div>
         <div className="flex flex-col md:flex-row gap-4">
           <div className="md:w-1/5 w-full space-y-2">

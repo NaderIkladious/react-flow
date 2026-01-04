@@ -190,6 +190,7 @@ const App: React.FC = () => {
   const [isPro, setIsPro] = React.useState(true);
   const [copied, setCopied] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0);
+  const [sliderPosition, setSliderPosition] = React.useState(50);
 
   const copyInstallCommand = async () => {
     try {
@@ -201,6 +202,15 @@ const App: React.FC = () => {
       setCopied(false);
     }
   };
+
+  React.useEffect(() => {
+    setSliderPosition(50);
+    const steps = [10, 90, 50];
+    const timers = steps.map((position, idx) =>
+      window.setTimeout(() => setSliderPosition(position), (idx + 1) * 1000)
+    );
+    return () => timers.forEach((id) => window.clearTimeout(id));
+  }, [activeIndex]);
 
   return (
     <div className="max-w-6xl mx-auto px-5 py-12 space-y-8">
@@ -298,10 +308,13 @@ const App: React.FC = () => {
             </div>
             <ReactCompareSlider
               className="compare-slider"
+              position={sliderPosition}
+              onPositionChange={setSliderPosition}
+              transition="0.65s ease"
               itemOne={
                 <div className="compare-item">
                   <CodeSample
-                    title={`${comparisons[activeIndex].title}`}
+                    title={`${comparisons[activeIndex].title} — without Flow`}
                     badge="Manual"
                     code={comparisons[activeIndex].before}
                     accent="manual"
@@ -311,7 +324,7 @@ const App: React.FC = () => {
               itemTwo={
                 <div className="compare-item">
                   <CodeSample
-                    title={`${comparisons[activeIndex].title}`}
+                    title={`${comparisons[activeIndex].title} — with Flow`}
                     badge="Flow"
                     code={comparisons[activeIndex].after}
                     accent="flow"
@@ -332,7 +345,7 @@ const App: React.FC = () => {
                   }}
                 />
               }
-              style={{ width: "100%", height: "420px", borderRadius: "6px" }}
+              style={{ width: "100%", height: "420px", borderRadius: "16px" }}
             />
           </div>
         </div>

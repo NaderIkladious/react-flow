@@ -6,7 +6,7 @@ import { Highlight, Language, themes } from "prism-react-renderer";
 import "./index.css";
 import NpmIcon from "./icons/NpmIcon";
 import GithubIcon from "./icons/GithubIcon";
-import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon, HeartIcon } from "@heroicons/react/24/outline";
 
 const comparisons = [
   {
@@ -186,6 +186,7 @@ const HighlightedCode: React.FC<{ code: string; language?: Language }> = ({
   </Highlight>
 );
 const npmUrl = "https://www.npmjs.com/package/@naderikladious/react-flow";
+const sponsorUrl = "https://github.com/sponsors/NaderIkladious";
 
 const App: React.FC = () => {
   const [isPro, setIsPro] = React.useState(true);
@@ -313,7 +314,7 @@ const App: React.FC = () => {
               itemOne={
                 <div className="compare-item">
                   <CodeSample
-                    title={`${comparisons[activeIndex].title} — without Flow`}
+                    title={`${comparisons[activeIndex].title} — without React Flow`}
                     badge="Manual"
                     code={comparisons[activeIndex].before}
                     accent="manual"
@@ -323,7 +324,7 @@ const App: React.FC = () => {
               itemTwo={
                 <div className="compare-item">
                   <CodeSample
-                    title={`${comparisons[activeIndex].title} — with Flow`}
+                    title={`${comparisons[activeIndex].title} — with React Flow`}
                     badge="Flow"
                     code={comparisons[activeIndex].after}
                     accent="flow"
@@ -422,9 +423,15 @@ const App: React.FC = () => {
           </h3>
         </div>
         <div className="flex gap-3 flex-wrap">
-          <button className="button-primary" type="button" onClick={copyInstallCommand}>
-            {copied ? "Copied!" : installCmd}
-          </button>
+          <a
+            className="button-ghost inline-flex items-center gap-2"
+            href={sponsorUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <HeartIcon className="h-5 w-5 text-red-500" />
+            <span>Become a sponsor</span>
+          </a>
           <a className="button-ghost" href="https://github.com/NaderIkladious/react-flow">
             Star on GitHub
           </a>

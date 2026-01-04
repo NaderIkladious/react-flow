@@ -82,10 +82,20 @@ body {
 .button-primary {
   @apply button-base text-midnight-900 border-transparent;
   background: linear-gradient(135deg, #22d3ee, #3b82f6);
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
 }
 
 .button-ghost {
   @apply button-base text-slate-100 border-slate-700/60 bg-white/5;
+  transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
+}
+
+.button-primary:hover {
+  filter: brightness(1.05);
+}
+
+.button-ghost:hover {
+  @apply border-slate-500/60 bg-white/10;
 }
 
 .pill {

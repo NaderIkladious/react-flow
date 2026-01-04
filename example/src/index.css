@@ -42,7 +42,7 @@ body {
 }
 
 .compare-slider {
-  border-radius: 16px;
+  border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.32);
 }

@@ -185,6 +185,7 @@ const HighlightedCode: React.FC<{ code: string; language?: Language }> = ({
 const App: React.FC = () => {
   const [isPro, setIsPro] = React.useState(true);
   const [copied, setCopied] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(0);
 
   const copyInstallCommand = async () => {
     try {
@@ -260,56 +261,76 @@ const App: React.FC = () => {
             <span className="switch-label">{isPro ? "Pro" : "Trial"}</span>
           </label>
         </div>
-        <div className="space-y-5">
-          {comparisons.map((section) => (
-            <div key={section.title} className="card-surface shadow-card p-5 space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="eyebrow">{section.title}</p>
-                  <p className="text-slate-400 text-sm max-w-3xl">{section.summary}</p>
-                </div>
-                <div className="pill text-xs bg-white/5 text-slate-200">Drag to compare</div>
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="md:w-1/5 w-full space-y-2">
+            {comparisons.map((section, idx) => {
+              const isActive = idx === activeIndex;
+              return (
+                <button
+                  key={section.title}
+                  type="button"
+                  onClick={() => setActiveIndex(idx)}
+                  className={`w-full text-left px-4 py-3 rounded-xl border transition ${
+                    isActive
+                      ? "border-cyan-400/60 bg-cyan-400/10 text-white shadow-card"
+                      : "border-slate-700/60 bg-white/5 text-slate-200 hover:border-slate-500/60"
+                  }`}
+                >
+                  <div className="text-sm font-semibold">{section.title}</div>
+                  <div className="text-xs text-slate-400 mt-1">{section.summary}</div>
+                </button>
+              );
+            })}
+          </div>
+          <div className="md:w-4/5 w-full card-surface shadow-card p-5 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="eyebrow">{comparisons[activeIndex].title}</p>
+                <p className="text-slate-400 text-sm max-w-3xl">
+                  {comparisons[activeIndex].summary}
+                </p>
               </div>
-              <ReactCompareSlider
-                className="compare-slider"
-                itemOne={
-                  <div className="compare-item">
-                    <CodeSample
-                      title={`${section.title} — without Flow`}
-                      badge="Manual"
-                      code={section.before}
-                      accent="manual"
-                    />
-                  </div>
-                }
-                itemTwo={
-                  <div className="compare-item">
-                    <CodeSample
-                      title={`${section.title} — with Flow`}
-                      badge="Flow"
-                      code={section.after}
-                      accent="flow"
-                    />
-                  </div>
-                }
-                handle={
-                  <ReactCompareSliderHandle
-                    buttonStyle={{
-                      border: "1px solid rgba(255,255,255,0.18)",
-                      background: "#0d1428",
-                      boxShadow: "0 10px 30px rgba(34, 211, 238, 0.25)",
-                    }}
-                    linesStyle={{
-                      background:
-                        "linear-gradient(180deg, rgba(34,211,238,0.5) 0%, rgba(59,130,246,0.6) 100%)",
-                      width: "3px",
-                    }}
-                  />
-                }
-                style={{ width: "100%", height: "420px", borderRadius: "16px" }}
-              />
+              <div className="pill text-xs bg-white/5 text-slate-200">Drag to compare</div>
             </div>
-          ))}
+            <ReactCompareSlider
+              className="compare-slider"
+              itemOne={
+                <div className="compare-item">
+                  <CodeSample
+                    title={`${comparisons[activeIndex].title} — without Flow`}
+                    badge="Manual"
+                    code={comparisons[activeIndex].before}
+                    accent="manual"
+                  />
+                </div>
+              }
+              itemTwo={
+                <div className="compare-item">
+                  <CodeSample
+                    title={`${comparisons[activeIndex].title} — with Flow`}
+                    badge="Flow"
+                    code={comparisons[activeIndex].after}
+                    accent="flow"
+                  />
+                </div>
+              }
+              handle={
+                <ReactCompareSliderHandle
+                  buttonStyle={{
+                    border: "1px solid rgba(255,255,255,0.18)",
+                    background: "#0d1428",
+                    boxShadow: "0 10px 30px rgba(34, 211, 238, 0.25)",
+                  }}
+                  linesStyle={{
+                    background:
+                      "linear-gradient(180deg, rgba(34,211,238,0.5) 0%, rgba(59,130,246,0.6) 100%)",
+                    width: "3px",
+                  }}
+                />
+              }
+              style={{ width: "100%", height: "420px", borderRadius: "6px" }}
+            />
+          </div>
         </div>
       </section>
 

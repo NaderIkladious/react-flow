@@ -1,6 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Flow } from "react-flow";
+import {
+  ReactCompareSlider,
+  ReactCompareSliderHandle,
+} from "react-compare-slider";
+import { Highlight, Language, themes } from "prism-react-renderer";
 import "./index.css";
 
 const comparisons = [
@@ -132,6 +137,51 @@ const products: Product[] = [
 
 const installCmd = "npm i @naderikladious/react-flow";
 
+type CodeSampleProps = {
+  title: string;
+  badge: string;
+  code: string;
+  accent?: "manual" | "flow";
+};
+
+const CodeSample: React.FC<CodeSampleProps> = ({ title, badge, code, accent }) => (
+  <div className="code-pane">
+    <div className="flex items-center justify-between mb-3">
+      <span className="text-cyan-300 text-sm font-semibold">{title}</span>
+      <span
+        className={`pill text-xs ${
+          accent === "flow" ? "bg-gradient-to-r from-cyan-400/30 to-blue-500/30" : "bg-white/5"
+        }`}
+      >
+        {badge}
+      </span>
+    </div>
+    <HighlightedCode code={code} />
+  </div>
+);
+
+const HighlightedCode: React.FC<{ code: string; language?: Language }> = ({
+  code,
+  language = "tsx",
+}) => (
+  <Highlight code={code} language={language} theme={themes.nightOwl}>
+    {({ className, style, tokens, getLineProps, getTokenProps }) => (
+      <pre className={`code-block ${className}`} style={{ ...style, backgroundColor: "transparent" }}>
+        {tokens.map((line, index) => (
+          <div key={index} {...getLineProps({ line })} className="code-line">
+            <span className="code-line-number">{index + 1}</span>
+            <span className="code-line-content">
+              {line.map((token, key) => (
+                <span key={key} {...getTokenProps({ token })} />
+              ))}
+            </span>
+          </div>
+        ))}
+      </pre>
+    )}
+  </Highlight>
+);
+
 const App: React.FC = () => {
   const [isPro, setIsPro] = React.useState(true);
   const [copied, setCopied] = React.useState(false);
@@ -212,26 +262,52 @@ const App: React.FC = () => {
         </div>
         <div className="space-y-5">
           {comparisons.map((section) => (
-            <div key={section.title} className="grid md:grid-cols-2 gap-4">
-              <div className="code-card">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-cyan-300 text-sm font-semibold">
-                    {section.title} — without Flow
-                  </span>
-                  <span className="pill text-xs bg-white/5 text-slate-200">Manual</span>
+            <div key={section.title} className="card-surface shadow-card p-5 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="eyebrow">{section.title}</p>
+                  <p className="text-slate-400 text-sm max-w-3xl">{section.summary}</p>
                 </div>
-                <pre className="code-block">{section.before}</pre>
+                <div className="pill text-xs bg-white/5 text-slate-200">Drag to compare</div>
               </div>
-              <div className="code-card">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-cyan-300 text-sm font-semibold">
-                    {section.title} — with Flow
-                  </span>
-                  <span className="pill text-xs bg-white/5 text-slate-200">Flow</span>
-                </div>
-                <p className="text-slate-400 text-sm mb-2">{section.summary}</p>
-                <pre className="code-block">{section.after}</pre>
-              </div>
+              <ReactCompareSlider
+                className="compare-slider"
+                itemOne={
+                  <div className="compare-item">
+                    <CodeSample
+                      title={`${section.title} — without Flow`}
+                      badge="Manual"
+                      code={section.before}
+                      accent="manual"
+                    />
+                  </div>
+                }
+                itemTwo={
+                  <div className="compare-item">
+                    <CodeSample
+                      title={`${section.title} — with Flow`}
+                      badge="Flow"
+                      code={section.after}
+                      accent="flow"
+                    />
+                  </div>
+                }
+                handle={
+                  <ReactCompareSliderHandle
+                    buttonStyle={{
+                      border: "1px solid rgba(255,255,255,0.18)",
+                      background: "#0d1428",
+                      boxShadow: "0 10px 30px rgba(34, 211, 238, 0.25)",
+                    }}
+                    linesStyle={{
+                      background:
+                        "linear-gradient(180deg, rgba(34,211,238,0.5) 0%, rgba(59,130,246,0.6) 100%)",
+                      width: "3px",
+                    }}
+                  />
+                }
+                style={{ width: "100%", height: "420px", borderRadius: "16px" }}
+              />
             </div>
           ))}
         </div>

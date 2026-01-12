@@ -223,13 +223,14 @@ const App: React.FC = () => {
             Declarative control-flow
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-            Untangle nested conditions.
+            Turn messy JSX into readable React Flow tags.
             <br />
-            Ship flows you can reason about.
+            <span className="text-2xl md:text-3xl">Drop the nested <code>if</code> / <code>map</code> spaghetti.</span>
           </h1>
           <p className="text-slate-300 max-w-2xl">
-            React Flow turns manual <code>if</code> trees and nested <code>map</code> calls into
-            typed, composable primitives. See how the same UI reads with and without Flow.
+            React Flow components replace ad-hoc conditions and maps sprinkled through markup with
+            structured, named primitives. Highlight every clause and keep keys and types close to
+            the UI.
           </p>
           <div className="flex flex-wrap gap-3">
             <a className="button-primary" href="https://github.com/NaderIkladious/react-flow">
@@ -264,7 +265,6 @@ const App: React.FC = () => {
       <section className="card-surface p-6 shadow-card">
         <div className="flex flex-wrap justify-between items-center gap-3 mb-4">
           <div>
-            <p className="eyebrow">Before vs after</p>
             <h2 className="text-xl font-semibold text-white mt-1">
               Real-world snippets: manual vs Flow
             </h2>

@@ -23,6 +23,60 @@ export const Condition: React.FC<FlowConditionProps> = ({ value, children }) => 
   );
 };
 
+export type FlowAsyncConditionProps = {
+  value: Promise<boolean> | (() => Promise<boolean>);
+  pending?: React.ReactNode;
+  error?: (error: unknown) => React.ReactNode;
+  children?: React.ReactNode;
+};
+
+export const AsyncCondition: React.FC<FlowAsyncConditionProps> = ({
+  value,
+  pending = null,
+  error,
+  children,
+}) => {
+  const [state, setState] = React.useState<{
+    status: "pending" | "resolved" | "rejected";
+    value?: boolean;
+    error?: unknown;
+  }>({ status: "pending" });
+
+  React.useEffect(() => {
+    let active = true;
+    const promise = typeof value === "function" ? value() : value;
+    Promise.resolve(promise)
+      .then((resolved) => {
+        if (!active) return;
+        setState({ status: "resolved", value: resolved });
+      })
+      .catch((err) => {
+        if (!active) return;
+        setState({ status: "rejected", error: err });
+      });
+    return () => {
+      active = false;
+    };
+  }, [value]);
+
+  if (state.status === "pending") {
+    return <>{pending}</>;
+  }
+
+  if (state.status === "rejected") {
+    if (error) {
+      return <>{error(state.error)}</>;
+    }
+    throw state.error instanceof Error ? state.error : new Error("Flow.AsyncCondition failed.");
+  }
+
+  return (
+    <FlowConditionContext.Provider value={{ value: state.value ?? false, hasProvider: true }}>
+      {children}
+    </FlowConditionContext.Provider>
+  );
+};
+
 export type FlowConditionalBranchProps = {
   condition?: boolean;
   children?: React.ReactNode;
@@ -216,6 +270,7 @@ export const useFlowCondition = () => {
 
 export const ReactFlow = {
   Condition,
+  AsyncCondition,
   If,
   Else,
   Unless,

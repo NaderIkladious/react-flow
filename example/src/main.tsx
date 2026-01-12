@@ -167,6 +167,37 @@ return (
 );
 `.trim(),
   },
+  {
+    title: "Async condition",
+    summary: "Wait for async checks without threading state everywhere.",
+    before: `
+function Gate({ check }) {
+  const [ready, setReady] = React.useState(null);
+
+  React.useEffect(() => {
+    check().then(setReady);
+  }, [check]);
+
+  if (ready === null) return <LoadingState />;
+  return ready ? <Content /> : <NoAccess />;
+}
+`.trim(),
+    after: `
+return (
+  <Flow.AsyncCondition
+    value={check}
+    pending={<LoadingState />}
+  >
+    <Flow.If>
+      <Content />
+    </Flow.If>
+    <Flow.Else>
+      <NoAccess />
+    </Flow.Else>
+  </Flow.AsyncCondition>
+);
+`.trim(),
+  },
 ];
 
 type User = {
@@ -256,6 +287,14 @@ const App: React.FC = () => {
   const plans = ["starter", "pro", "enterprise"] as const;
   const [planIndex, setPlanIndex] = React.useState(1);
   const activePlan = plans[planIndex];
+  const [asyncSeed, setAsyncSeed] = React.useState(0);
+  const asyncCheck = React.useMemo(
+    () =>
+      new Promise<boolean>((resolve) => {
+        window.setTimeout(() => resolve(isPro), 900);
+      }),
+    [isPro, asyncSeed]
+  );
 
   const copyInstallCommand = async () => {
     try {
@@ -339,25 +378,31 @@ const App: React.FC = () => {
         
         </div>
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-1/5 w-full space-y-2">
-            {comparisons.map((section, idx) => {
-              const isActive = idx === activeIndex;
-              return (
-                <button
-                  key={section.title}
-                  type="button"
-                  onClick={() => setActiveIndex(idx)}
-                  className={`w-full text-left px-4 py-3 rounded-xl border transition ${
-                    isActive
-                      ? "border-cyan-400/60 bg-cyan-400/10 text-white shadow-card"
-                      : "border-slate-700/60 bg-white/5 text-slate-200 hover:border-slate-500/60"
-                  }`}
-                >
-                  <div className="text-sm font-semibold">{section.title}</div>
-                  <div className="text-xs text-slate-400 mt-1">{section.summary}</div>
-                </button>
-              );
-            })}
+          <div className="md:w-1/5 w-full">
+            <div className="compare-list">
+              {comparisons.map((section, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <button
+                    key={section.title}
+                    type="button"
+                    onClick={() => setActiveIndex(idx)}
+                    className={`w-full text-left px-4 py-3 rounded-xl border transition ${
+                      isActive
+                        ? "border-cyan-400/60 bg-cyan-400/10 text-white shadow-card"
+                        : "border-slate-700/60 bg-white/5 text-slate-200 hover:border-slate-500/60"
+                    }`}
+                  >
+                    <div className="text-sm font-semibold">{section.title}</div>
+                    <div className="text-xs text-slate-400 mt-1">{section.summary}</div>
+                  </button>
+                );
+              })}
+              <div className="compare-scroll-hint">
+                <span className="compare-scroll-dot" />
+                Scroll
+              </div>
+            </div>
           </div>
           <div className="md:w-4/5 w-full card-surface shadow-card p-5 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -498,6 +543,26 @@ const App: React.FC = () => {
                 onClick={() => setPlanIndex((index) => (index + 1) % plans.length)}
               >
                 Switch plan: {activePlan}
+              </button>
+            </div>
+          </div>
+
+          <div className="demo-card">
+            <div className="demo-title">Async gate</div>
+            <Flow.AsyncCondition
+              value={asyncCheck}
+              pending={<p className="text-slate-400">Checking access...</p>}
+            >
+              <Flow.If>
+                <p className="text-emerald-400 font-semibold">Access granted</p>
+              </Flow.If>
+              <Flow.Else>
+                <p className="text-slate-400">Access denied</p>
+              </Flow.Else>
+            </Flow.AsyncCondition>
+            <div className="controls">
+              <button className="button-ghost" onClick={() => setAsyncSeed((v) => v + 1)}>
+                Recheck async
               </button>
             </div>
           </div>

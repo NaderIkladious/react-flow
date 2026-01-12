@@ -30,6 +30,7 @@ npm run dev
 Preferred namespace is `Flow` (with `ReactFlow` available as an alias).
 
 - `Flow.Condition` — provides a boolean value to descendants.
+- `Flow.AsyncCondition` — resolves a boolean asynchronously and provides it to descendants.
 - `Flow.If` — renders children when the condition is true (prop overrides context).
 - `Flow.Else` — renders children when the condition is false (prop overrides context).
 - `Flow.Unless` — renders children when the condition is false (prop overrides context).

@@ -27,36 +27,39 @@ npm run dev
 ```
 
 ## API
-- `Flow.Condition` — provides a boolean value to descendants.
-- `Flow.If` — renders children when the condition is true (prop overrides context).
-- `Flow.Else` — renders children when the condition is false (prop overrides context).
-- `Flow.ForEach<T>` — iterates an array with an optional `keyExtractor` and render-function children `(item, index) => ReactNode`.
-- `Flow.For` — iterates `count` times with optional `start` and `step`, render-function children `(index) => ReactNode`.
-- `Flow.Batch<T>` — groups items into chunks of `batchSize` and renders `(batch, batchIndex) => ReactNode` using `Flow.ForEach` under the hood.
-- `useFlowCondition` — hook to read the nearest `Flow.Condition` value (throws if missing).
+Preferred namespace is `ReactFlow` (with `Flow` as a legacy alias).
 
-All components are also available as named exports (tree-shakeable) in addition to the `Flow` namespace object.
+- `ReactFlow.Condition` — provides a boolean value to descendants.
+- `ReactFlow.If` — renders children when the condition is true (prop overrides context).
+- `ReactFlow.Else` — renders children when the condition is false (prop overrides context).
+- `ReactFlow.ForEach<T>` — iterates an array with an optional `keyExtractor` and render-function children `(item, index) => ReactNode`.
+- `ReactFlow.For` — iterates `count` times with optional `start` and `step`, render-function children `(index) => ReactNode`.
+- `ReactFlow.Batch<T>` — groups items into chunks of `batchSize` and renders `(batch, batchIndex) => ReactNode` using `ReactFlow.ForEach` under the hood.
+- `ReactFlow.Switch` / `ReactFlow.Case` / `ReactFlow.Default` — declarative branching on a single value.
+- `useFlowCondition` — hook to read the nearest `ReactFlow.Condition` value (throws if missing).
+
+All components are also available as named exports (tree-shakeable) in addition to the namespace object.
 
 ## Examples
 Basic conditionals:
 ```tsx
-<Flow.Condition value={isEnabled}>
-  <Flow.If>
+<ReactFlow.Condition value={isEnabled}>
+  <ReactFlow.If>
     <div>Enabled</div>
-  </Flow.If>
-  <Flow.Else>
+  </ReactFlow.If>
+  <ReactFlow.Else>
     <div>Disabled</div>
-  </Flow.Else>
-</Flow.Condition>
+</ReactFlow.Else>
+</ReactFlow.Condition>
 ```
 
 Lists and batches:
 ```tsx
-<Flow.ForEach items={items} keyExtractor={(item) => item.id}>
+<ReactFlow.ForEach items={items} keyExtractor={(item) => item.id}>
   {(item) => <div>{item.name}</div>}
-</Flow.ForEach>
+</ReactFlow.ForEach>
 
-<Flow.Batch items={products} batchSize={3}>
+<ReactFlow.Batch items={products} batchSize={3}>
   {(batch, i) => (
     <section>
       <h3>Batch {i + 1}</h3>
@@ -65,14 +68,14 @@ Lists and batches:
       ))}
     </section>
   )}
-</Flow.Batch>
+</ReactFlow.Batch>
 ```
 
 Numeric loops:
 ```tsx
-<Flow.For count={5} start={1}>
+<ReactFlow.For count={5} start={1}>
   {(index) => <span key={index}>{index}</span>}
-</Flow.For>
+</ReactFlow.For>
 ```
 
 ## Scripts

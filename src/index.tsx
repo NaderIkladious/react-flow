@@ -44,13 +44,13 @@ const resolveCondition = (
 
 export const If: React.FC<FlowConditionalBranchProps> = ({ condition, children }) => {
   const context = React.useContext(FlowConditionContext);
-  const active = resolveCondition(condition, context, "Flow.If");
+  const active = resolveCondition(condition, context, "ReactFlow.If");
   return active ? <>{children}</> : null;
 };
 
 export const Else: React.FC<FlowConditionalBranchProps> = ({ condition, children }) => {
   const context = React.useContext(FlowConditionContext);
-  const active = resolveCondition(condition, context, "Flow.Else");
+  const active = resolveCondition(condition, context, "ReactFlow.Else");
   return !active ? <>{children}</> : null;
 };
 
@@ -134,29 +134,97 @@ export const Batch = <T,>({ items, batchSize, children }: FlowBatchProps<T>): Re
   );
 };
 
+export type FlowSwitchProps<T> = {
+  value: T;
+  children?: React.ReactNode;
+};
+
+export type FlowCaseProps<T> = {
+  when: T | ((value: T) => boolean);
+  children?: React.ReactNode;
+};
+
+export type FlowDefaultProps = {
+  children?: React.ReactNode;
+};
+
+export const Case = <T,>(_props: FlowCaseProps<T>): React.ReactElement | null => {
+  throw new Error("ReactFlow.Case must be used within ReactFlow.Switch.");
+};
+
+export const Default: React.FC<FlowDefaultProps> = () => {
+  throw new Error("ReactFlow.Default must be used within ReactFlow.Switch.");
+};
+
+export const Switch = <T,>({ value, children }: FlowSwitchProps<T>): React.ReactElement | null => {
+  let match: React.ReactNode | null = null;
+  let defaultElement: React.ReactElement<FlowDefaultProps> | null = null;
+
+  React.Children.forEach(children, (child) => {
+    if (match) {
+      return;
+    }
+    if (!React.isValidElement(child)) {
+      return;
+    }
+
+    if (child.type === Default) {
+      if (!defaultElement) {
+        defaultElement = child as React.ReactElement<FlowDefaultProps>;
+      }
+      return;
+    }
+
+    if (child.type === Case) {
+      const props = child.props as FlowCaseProps<T>;
+      const isMatch =
+        typeof props.when === "function" ? props.when(value) : Object.is(props.when, value);
+      if (isMatch) {
+        match = props.children;
+      }
+    }
+  });
+
+  if (match !== null) {
+    return <>{match}</>;
+  }
+
+  if (defaultElement) {
+    return <>{defaultElement.props.children}</>;
+  }
+
+  return null;
+};
+
 export const useFlowCondition = () => {
   const context = React.useContext(FlowConditionContext);
   if (!context.hasProvider) {
-    throw new Error("useFlowCondition must be used within a Flow.Condition.");
+    throw new Error("useFlowCondition must be used within a ReactFlow.Condition.");
   }
   return context.value;
 };
 
-export const Flow = {
+export const ReactFlow = {
   Condition,
   If,
   Else,
   ForEach,
   For,
   Batch,
+  Switch,
+  Case,
+  Default,
 };
+
+// Legacy alias
+export const Flow = ReactFlow;
 
 export type ReactFlowProps = {
   message?: string;
 };
 
-export const ReactFlow: React.FC<ReactFlowProps> = ({ message = "Hello from react-flow" }) => {
+export const ReactFlowComponent: React.FC<ReactFlowProps> = ({ message = "Hello from react-flow" }) => {
   return <div>{message}</div>;
 };
 
-export default ReactFlow;
+export default ReactFlowComponent;

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Flow } from "react-flow";
+import { Flow } from "@naderikladious/react-flow";
 import { ReactCompareSlider, ReactCompareSliderHandle } from "react-compare-slider";
 import { Highlight, Language, themes } from "prism-react-renderer";
 import "./index.css";
@@ -107,6 +107,40 @@ return batches.map((batch, idx) => (
 </Flow.Batch>
 `.trim(),
   },
+  {
+    title: "Switch / Case / Default",
+    summary: "Replace cascaded if/else blocks with declarative cases.",
+    before: `
+function Banner({ plan }) {
+  return (
+    <>
+      {plan === "starter" && <StarterBanner />}
+      {plan === "pro" && <ProBanner />}
+      {plan === "enterprise" && <EnterpriseBanner />}
+      {!["starter", "pro", "enterprise"].includes(plan) && <DefaultBanner />}
+    </>
+  );
+}
+`.trim(),
+    after: `
+return (
+  <ReactFlow.Switch value={plan}>
+    <ReactFlow.Case when="starter">
+      <StarterBanner />
+    </ReactFlow.Case>
+    <ReactFlow.Case when="pro">
+      <ProBanner />
+    </ReactFlow.Case>
+    <ReactFlow.Case when="enterprise">
+      <EnterpriseBanner />
+    </ReactFlow.Case>
+    <ReactFlow.Default>
+      <DefaultBanner />
+    </ReactFlow.Default>
+  </ReactFlow.Switch>
+);
+`.trim(),
+  },
 ];
 
 type User = {
@@ -193,6 +227,9 @@ const App: React.FC = () => {
   const [copied, setCopied] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [sliderPosition, setSliderPosition] = React.useState(50);
+  const plans = ["starter", "pro", "enterprise"] as const;
+  const [planIndex, setPlanIndex] = React.useState(1);
+  const activePlan = plans[planIndex];
 
   const copyInstallCommand = async () => {
     try {
@@ -357,7 +394,7 @@ const App: React.FC = () => {
           <h2 className="text-xl font-semibold text-white mt-1">See the primitives in action</h2>
           <p className="text-slate-400 max-w-3xl">
             Toggle conditions, iterate with keys, and batch records without bespoke helpers. Everything
-            below is driven by Flow components.
+            below is driven by ReactFlow components.
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
@@ -411,6 +448,32 @@ const App: React.FC = () => {
                 </div>
               )}
             </Flow.Batch>
+          </div>
+
+          <div className="demo-card">
+            <div className="demo-title">Plan switch</div>
+            <Flow.Switch value={activePlan}>
+              <Flow.Case when="starter">
+                <p className="text-slate-300">Starter plan — core analytics.</p>
+              </Flow.Case>
+              <Flow.Case when="pro">
+                <p className="text-emerald-400 font-semibold">Pro plan — automation unlocked.</p>
+              </Flow.Case>
+              <Flow.Case when="enterprise">
+                <p className="text-cyan-300 font-semibold">Enterprise — custom workflows.</p>
+              </Flow.Case>
+              <Flow.Default>
+                <p className="text-slate-400">Unknown plan.</p>
+              </Flow.Default>
+            </Flow.Switch>
+            <div className="controls">
+              <button
+                className="button-ghost"
+                onClick={() => setPlanIndex((index) => (index + 1) % plans.length)}
+              >
+                Switch plan: {activePlan}
+              </button>
+            </div>
           </div>
         </div>
       </section>

@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/NaderIkladious/react-flow/compare/v0.1.4...v0.1.5) (2026-01-12)
+
+
+### Features
+
+* **core:** add async condition and demo ([e1a5017](https://github.com/NaderIkladious/react-flow/commit/e1a501795cc0d6f8a4ba5a9ffd48c6d83eee7d37))
+
 ## [0.1.4](https://github.com/NaderIkladious/react-flow/compare/v0.1.3...v0.1.4) (2026-01-12)
 
 

@@ -44,13 +44,19 @@ const resolveCondition = (
 
 export const If: React.FC<FlowConditionalBranchProps> = ({ condition, children }) => {
   const context = React.useContext(FlowConditionContext);
-  const active = resolveCondition(condition, context, "ReactFlow.If");
+  const active = resolveCondition(condition, context, "Flow.If");
   return active ? <>{children}</> : null;
 };
 
 export const Else: React.FC<FlowConditionalBranchProps> = ({ condition, children }) => {
   const context = React.useContext(FlowConditionContext);
-  const active = resolveCondition(condition, context, "ReactFlow.Else");
+  const active = resolveCondition(condition, context, "Flow.Else");
+  return !active ? <>{children}</> : null;
+};
+
+export const Unless: React.FC<FlowConditionalBranchProps> = ({ condition, children }) => {
+  const context = React.useContext(FlowConditionContext);
+  const active = resolveCondition(condition, context, "Flow.Unless");
   return !active ? <>{children}</> : null;
 };
 
@@ -149,38 +155,42 @@ export type FlowDefaultProps = {
 };
 
 export const Case = <T,>(_props: FlowCaseProps<T>): React.ReactElement | null => {
-  throw new Error("ReactFlow.Case must be used within ReactFlow.Switch.");
+  throw new Error("Flow.Case must be used within Flow.Switch.");
 };
 
 export const Default: React.FC<FlowDefaultProps> = () => {
-  throw new Error("ReactFlow.Default must be used within ReactFlow.Switch.");
+  throw new Error("Flow.Default must be used within Flow.Switch.");
 };
 
 export const Switch = <T,>({ value, children }: FlowSwitchProps<T>): React.ReactElement | null => {
   let match: React.ReactNode | null = null;
-  let defaultElement: React.ReactElement<FlowDefaultProps> | null = null;
+  let defaultChildren: React.ReactNode | null = null;
+
+  const isPredicate = (when: FlowCaseProps<T>["when"]): when is (value: T) => boolean =>
+    typeof when === "function";
+  const isCaseElement = (node: React.ReactNode): node is React.ReactElement<FlowCaseProps<T>> =>
+    React.isValidElement(node) && node.type === Case;
+  const isDefaultElement = (node: React.ReactNode): node is React.ReactElement<FlowDefaultProps> =>
+    React.isValidElement(node) && node.type === Default;
 
   React.Children.forEach(children, (child) => {
     if (match) {
       return;
     }
-    if (!React.isValidElement(child)) {
-      return;
-    }
-
-    if (child.type === Default) {
-      if (!defaultElement) {
-        defaultElement = child as React.ReactElement<FlowDefaultProps>;
+    if (isDefaultElement(child)) {
+      if (defaultChildren === null) {
+        defaultChildren = child.props.children;
       }
       return;
     }
 
-    if (child.type === Case) {
-      const props = child.props as FlowCaseProps<T>;
-      const isMatch =
-        typeof props.when === "function" ? props.when(value) : Object.is(props.when, value);
+    if (isCaseElement(child)) {
+      const { when, children: caseChildren } = child.props;
+      const isMatch = isPredicate(when)
+        ? (when as (value: T) => boolean)(value)
+        : Object.is(when, value);
       if (isMatch) {
-        match = props.children;
+        match = caseChildren;
       }
     }
   });
@@ -189,8 +199,8 @@ export const Switch = <T,>({ value, children }: FlowSwitchProps<T>): React.React
     return <>{match}</>;
   }
 
-  if (defaultElement) {
-    return <>{defaultElement.props.children}</>;
+  if (defaultChildren !== null) {
+    return <>{defaultChildren}</>;
   }
 
   return null;
@@ -199,7 +209,7 @@ export const Switch = <T,>({ value, children }: FlowSwitchProps<T>): React.React
 export const useFlowCondition = () => {
   const context = React.useContext(FlowConditionContext);
   if (!context.hasProvider) {
-    throw new Error("useFlowCondition must be used within a ReactFlow.Condition.");
+    throw new Error("useFlowCondition must be used within a Flow.Condition.");
   }
   return context.value;
 };
@@ -208,6 +218,7 @@ export const ReactFlow = {
   Condition,
   If,
   Else,
+  Unless,
   ForEach,
   For,
   Batch,

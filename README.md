@@ -27,39 +27,40 @@ npm run dev
 ```
 
 ## API
-Preferred namespace is `ReactFlow` (with `Flow` as a legacy alias).
+Preferred namespace is `Flow` (with `ReactFlow` available as an alias).
 
-- `ReactFlow.Condition` — provides a boolean value to descendants.
-- `ReactFlow.If` — renders children when the condition is true (prop overrides context).
-- `ReactFlow.Else` — renders children when the condition is false (prop overrides context).
-- `ReactFlow.ForEach<T>` — iterates an array with an optional `keyExtractor` and render-function children `(item, index) => ReactNode`.
-- `ReactFlow.For` — iterates `count` times with optional `start` and `step`, render-function children `(index) => ReactNode`.
-- `ReactFlow.Batch<T>` — groups items into chunks of `batchSize` and renders `(batch, batchIndex) => ReactNode` using `ReactFlow.ForEach` under the hood.
-- `ReactFlow.Switch` / `ReactFlow.Case` / `ReactFlow.Default` — declarative branching on a single value.
-- `useFlowCondition` — hook to read the nearest `ReactFlow.Condition` value (throws if missing).
+- `Flow.Condition` — provides a boolean value to descendants.
+- `Flow.If` — renders children when the condition is true (prop overrides context).
+- `Flow.Else` — renders children when the condition is false (prop overrides context).
+- `Flow.Unless` — renders children when the condition is false (prop overrides context).
+- `Flow.ForEach<T>` — iterates an array with an optional `keyExtractor` and render-function children `(item, index) => ReactNode`.
+- `Flow.For` — iterates `count` times with optional `start` and `step`, render-function children `(index) => ReactNode`.
+- `Flow.Batch<T>` — groups items into chunks of `batchSize` and renders `(batch, batchIndex) => ReactNode` using `Flow.ForEach` under the hood.
+- `Flow.Switch` / `Flow.Case` / `Flow.Default` — declarative branching on a single value.
+- `useFlowCondition` — hook to read the nearest `Flow.Condition` value (throws if missing).
 
 All components are also available as named exports (tree-shakeable) in addition to the namespace object.
 
 ## Examples
 Basic conditionals:
 ```tsx
-<ReactFlow.Condition value={isEnabled}>
-  <ReactFlow.If>
+<Flow.Condition value={isEnabled}>
+  <Flow.If>
     <div>Enabled</div>
-  </ReactFlow.If>
-  <ReactFlow.Else>
+  </Flow.If>
+  <Flow.Else>
     <div>Disabled</div>
-</ReactFlow.Else>
-</ReactFlow.Condition>
+</Flow.Else>
+</Flow.Condition>
 ```
 
 Lists and batches:
 ```tsx
-<ReactFlow.ForEach items={items} keyExtractor={(item) => item.id}>
+<Flow.ForEach items={items} keyExtractor={(item) => item.id}>
   {(item) => <div>{item.name}</div>}
-</ReactFlow.ForEach>
+</Flow.ForEach>
 
-<ReactFlow.Batch items={products} batchSize={3}>
+<Flow.Batch items={products} batchSize={3}>
   {(batch, i) => (
     <section>
       <h3>Batch {i + 1}</h3>
@@ -68,14 +69,14 @@ Lists and batches:
       ))}
     </section>
   )}
-</ReactFlow.Batch>
+</Flow.Batch>
 ```
 
 Numeric loops:
 ```tsx
-<ReactFlow.For count={5} start={1}>
+<Flow.For count={5} start={1}>
   {(index) => <span key={index}>{index}</span>}
-</ReactFlow.For>
+</Flow.For>
 ```
 
 ## Scripts

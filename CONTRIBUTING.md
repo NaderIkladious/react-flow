@@ -30,3 +30,27 @@ Guidelines:
 - Use present tense, imperative mood.
 - Keep summaries under 72 characters.
 - Reference issues if applicable, e.g. `fix: handle undefined (#12)`.
+
+## Changelog
+Generate/update the changelog from the root:
+```
+npm run changelog
+```
+
+First-time generation:
+```
+npm run changelog:first
+```
+
+## Versioning & Tags
+We follow SemVer and tag releases after updating `package.json`:
+
+- **patch**: fixes, small improvements, internal refactors
+- **minor**: new backwards-compatible features
+- **major**: breaking changes or API removals
+
+Suggested flow:
+```
+npm version patch   # or minor / major
+git push --follow-tags
+```

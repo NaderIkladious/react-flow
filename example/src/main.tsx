@@ -124,20 +124,46 @@ function Banner({ plan }) {
 `.trim(),
     after: `
 return (
-  <ReactFlow.Switch value={plan}>
-    <ReactFlow.Case when="starter">
+  <Flow.Switch value={plan}>
+    <Flow.Case when="starter">
       <StarterBanner />
-    </ReactFlow.Case>
-    <ReactFlow.Case when="pro">
+    </Flow.Case>
+    <Flow.Case when="pro">
       <ProBanner />
-    </ReactFlow.Case>
-    <ReactFlow.Case when="enterprise">
+    </Flow.Case>
+    <Flow.Case when="enterprise">
       <EnterpriseBanner />
-    </ReactFlow.Case>
-    <ReactFlow.Default>
+    </Flow.Case>
+    <Flow.Default>
       <DefaultBanner />
-    </ReactFlow.Default>
-  </ReactFlow.Switch>
+    </Flow.Default>
+  </Flow.Switch>
+);
+`.trim(),
+  },
+  {
+    title: "Unless",
+    summary: "Flip conditions without wrapping them in !.",
+    before: `
+function Panel({ isReady }) {
+  return (
+    <>
+      {!isReady && <LoadingState />}
+      {isReady && <Content />}
+    </>
+  );
+}
+`.trim(),
+    after: `
+return (
+  <Flow.Condition value={isReady}>
+    <Flow.Unless>
+      <LoadingState />
+    </Flow.Unless>
+    <Flow.If>
+      <Content />
+    </Flow.If>
+  </Flow.Condition>
 );
 `.trim(),
   },
@@ -382,7 +408,7 @@ const App: React.FC = () => {
                   }}
                 />
               }
-              style={{ width: "100%", height: "420px", borderRadius: "16px" }}
+              style={{ width: "100%", height: "420px", borderRadius: "6px" }}
             />
           </div>
         </div>
@@ -394,7 +420,7 @@ const App: React.FC = () => {
           <h2 className="text-xl font-semibold text-white mt-1">See the primitives in action</h2>
           <p className="text-slate-400 max-w-3xl">
             Toggle conditions, iterate with keys, and batch records without bespoke helpers. Everything
-            below is driven by ReactFlow components.
+            below is driven by Flow components.
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
@@ -404,9 +430,9 @@ const App: React.FC = () => {
               <Flow.If>
                 <p className="text-emerald-400 font-semibold">Pro features unlocked</p>
               </Flow.If>
-              <Flow.Else>
+              <Flow.Unless>
                 <p className="text-slate-400">Upgrade to unlock automation</p>
-              </Flow.Else>
+              </Flow.Unless>
             </Flow.Condition>
             <div className="controls">
               <button className="button-ghost" onClick={() => setIsPro((v) => !v)}>

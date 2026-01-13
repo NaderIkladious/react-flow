@@ -15,6 +15,7 @@ body {
     #0a0f1f;
 }
 
+
 .code-block {
   @apply bg-midnight-800 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-sm leading-relaxed font-mono flex-1 overflow-auto;
 }
@@ -219,6 +220,7 @@ body {
     align-self: center;
   }
 }
+
 
 .glow-border {
   box-shadow: 0 10px 40px rgba(34, 211, 238, 0.15);

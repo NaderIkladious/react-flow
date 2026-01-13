@@ -2,6 +2,10 @@
 
 Utilities for declarative control-flow primitives in React, written in TypeScript and packaged for ESM/CJS consumers.
 
+<p>
+  <img src="docs/assets/flow-logo.png" alt="Flow logo" width="120" />
+</p>
+
 ## Motivation
 - Keep conditional and iterative UI logic readable without custom hooks per component.
 - Provide type-safe, render-prop based building blocks (`Flow.Condition`, `Flow.If`, `Flow.ForEach`, etc.).
@@ -43,6 +47,11 @@ Preferred namespace is `Flow` (with `ReactFlow` available as an alias).
 All components are also available as named exports (tree-shakeable) in addition to the namespace object.
 
 ## Examples
+Demo video:
+<p>
+  <video src="docs/assets/flow-demo.webm" controls muted playsinline width="720"></video>
+</p>
+
 Basic conditionals:
 ```tsx
 <Flow.Condition value={isEnabled}>

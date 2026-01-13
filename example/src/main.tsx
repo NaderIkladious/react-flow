@@ -6,6 +6,7 @@ import { Highlight, Language, themes } from "prism-react-renderer";
 import "./index.css";
 import NpmIcon from "./icons/NpmIcon";
 import GithubIcon from "./icons/GithubIcon";
+import FlowLogo from "./assets/flow-logo.png";
 import { DocumentDuplicateIcon, HeartIcon } from "@heroicons/react/24/outline";
 
 const comparisons = [
@@ -277,6 +278,7 @@ const HighlightedCode: React.FC<{ code: string; language?: Language }> = ({
   </Highlight>
 );
 const npmUrl = "https://www.npmjs.com/package/@naderikladious/react-flow";
+const docsUrl = `${import.meta.env.BASE_URL}docs/conditional/`;
 const sponsorUrl = "https://github.com/sponsors/NaderIkladious";
 
 const App: React.FC = () => {
@@ -321,7 +323,7 @@ const App: React.FC = () => {
       <header className="grid md:grid-cols-[1.4fr,1fr] gap-6 items-center">
         <div className="space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-semibold text-slate-100">
-            <span className="h-2 w-2 rounded-full bg-gradient-to-br from-cyan-300 to-blue-400" />
+            <img src={FlowLogo} alt="Flow logo" className="h-4 w-4 rounded-sm" />
             Declarative control-flow
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
@@ -342,6 +344,9 @@ const App: React.FC = () => {
             <a className="button-ghost" href={npmUrl}>
               <NpmIcon className="w-8 h-8" />
               <span className="ml-2">npm package</span>
+            </a>
+            <a className="button-ghost" href={docsUrl}>
+              Docs
             </a>
             <button className="button-ghost" type="button" onClick={copyInstallCommand}>
               <DocumentDuplicateIcon className="h-5 w-5" />

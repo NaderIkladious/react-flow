@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/NaderIkladious/react-flow/issues"
   },
-  "homepage": "https://github.com/NaderIkladious/react-flow#readme",
+  "homepage": "https://naderikladious.github.io/react-flow/",
   "scripts": {
     "build": "npm run clean && rollup -c",
     "clean": "rm -rf dist && mkdir -p dist",

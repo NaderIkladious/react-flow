@@ -3,7 +3,7 @@
 Utilities for declarative control-flow primitives in React, written in TypeScript and packaged for ESM/CJS consumers.
 
 <p>
-  <img src="docs/assets/flow-logo.png" alt="Flow logo" width="120" />
+  <img src="https://raw.githubusercontent.com/NaderIkladious/react-flow/main/assets/flow-logo.png" alt="Flow logo" width="120" />
 </p>
 
 ## Motivation
@@ -13,7 +13,7 @@ Utilities for declarative control-flow primitives in React, written in TypeScrip
 
 ## Installation
 ```bash
-npm install react-flow
+npm install @naderikladious/react-flow
 ```
 
 If working from this repo locally, install and build the library first:
@@ -49,7 +49,7 @@ All components are also available as named exports (tree-shakeable) in addition 
 ## Examples
 Demo video:
 <p>
-  <video src="docs/assets/flow-demo.webm" controls muted playsinline width="720"></video>
+  <video src="https://raw.githubusercontent.com/NaderIkladious/react-flow/main/assets/flow-demo.webm" controls muted playsinline width="720"></video>
 </p>
 
 Basic conditionals:

@@ -1,3 +1,10 @@
+## [0.1.6](https://github.com/NaderIkladious/react-flow/compare/v0.1.5...v0.1.6) (2026-01-13)
+
+
+### Features
+
+* **docs:** add logo, favicons, and docs pages ([1ea5cd5](https://github.com/NaderIkladious/react-flow/commit/1ea5cd5ba140cafe68bfe53d73e98cd08d828112))
+
 ## [0.1.5](https://github.com/NaderIkladious/react-flow/compare/v0.1.4...v0.1.5) (2026-01-12)
 
 

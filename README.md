@@ -11,6 +11,11 @@ Utilities for declarative control-flow primitives in React, written in TypeScrip
 - Provide type-safe, render-prop based building blocks (`Flow.Condition`, `Flow.If`, `Flow.ForEach`, etc.).
 - Ship tree-shakeable named exports for both bundlers and Node targets.
 
+Demo preview (GIF):
+<p>
+  <img src="https://raw.githubusercontent.com/NaderIkladious/react-flow/main/assets/react-flow-demo.gif" alt="Flow demo preview" width="720" />
+</p>
+
 ## Installation
 ```bash
 npm install @naderikladious/react-flow
@@ -47,11 +52,6 @@ Preferred namespace is `Flow` (with `ReactFlow` available as an alias).
 All components are also available as named exports (tree-shakeable) in addition to the namespace object.
 
 ## Examples
-Demo video:
-<p>
-  <video src="https://raw.githubusercontent.com/NaderIkladious/react-flow/main/assets/flow-demo.webm" controls muted playsinline width="720"></video>
-</p>
-
 Basic conditionals:
 ```tsx
 <Flow.Condition value={isEnabled}>

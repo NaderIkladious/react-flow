@@ -1,9 +1,32 @@
-# react-flow
+<h1>
+  <img src="https://raw.githubusercontent.com/NaderIkladious/react-flow/main/assets/flow-logo.png" alt="Flow logo" width="64" style="vertical-align: middle; margin-right: 8px;" />
+  react-flow
+</h1>
 
 Utilities for declarative control-flow primitives in React, written in TypeScript and packaged for ESM/CJS consumers.
 
 <p>
-  <img src="https://raw.githubusercontent.com/NaderIkladious/react-flow/main/assets/flow-logo.png" alt="Flow logo" width="120" />
+  <a href="https://www.npmjs.com/package/@naderikladious/react-flow">
+    <img alt="npm" src="https://img.shields.io/npm/v/@naderikladious/react-flow" />
+  </a>
+  <a href="https://www.npmjs.com/package/@naderikladious/react-flow">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/@naderikladious/react-flow" />
+  </a>
+  <a href="https://github.com/NaderIkladious/react-flow/actions/workflows/pages.yml">
+    <img alt="pages" src="https://img.shields.io/github/actions/workflow/status/NaderIkladious/react-flow/pages.yml?label=pages" />
+  </a>
+  <a href="https://bundlephobia.com/package/@naderikladious/react-flow">
+    <img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/@naderikladious/react-flow" />
+  </a>
+  <a href="https://github.com/NaderIkladious/react-flow">
+    <img alt="maintained" src="https://img.shields.io/maintenance/yes/2026" />
+  </a>
+  <a href="https://github.com/NaderIkladious/react-flow/issues">
+    <img alt="issues" src="https://img.shields.io/github/issues/NaderIkladious/react-flow" />
+  </a>
+  <a href="https://github.com/NaderIkladious/react-flow/blob/main/LICENSE">
+    <img alt="license" src="https://img.shields.io/github/license/NaderIkladious/react-flow" />
+  </a>
 </p>
 
 ## Motivation

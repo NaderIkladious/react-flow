@@ -4,8 +4,10 @@ import { resolve } from "path";
 
 const repoBase = "react-flow";
 
+const isCustomDomain = process.env.CUSTOM_DOMAIN === "true";
+
 export default defineConfig({
-  base: process.env.GITHUB_PAGES === "true" ? `/${repoBase}/` : "/",
+  base: isCustomDomain ? "/" : process.env.GITHUB_PAGES === "true" ? `/${repoBase}/` : "/",
   plugins: [react()],
   build: {
     rollupOptions: {
